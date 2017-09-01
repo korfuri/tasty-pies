@@ -1,0 +1,10 @@
+use_bpm 120
+
+
+with_fx :ixi_techno, phase: 0.25 do
+  live_loop :wawaw do
+    use_synth :dsaw
+    play_chord chord(*[[:c4, :major], [:a4, :minor], [:g4, :major], [:f4, :major]][tick(:chordprog) % 4], invert: 0), sustain: 4, attack: 0, release: 0
+    sleep 4
+  end
+end
