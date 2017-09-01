@@ -1,0 +1,26 @@
+use_bpm 120
+
+live_loop :kick do
+  4.times do
+    sample :bd_haus, amp: 0.3
+    sleep 1
+  end
+end
+
+live_loop :midikbctrl do
+  use_real_time
+  $kbnote, $kbvelocity = sync "/midi/midi_through_port-0/0/1/note_on"
+end
+
+live_loop :saw do
+  with_fx :bitcrusher do
+    sync :kick
+    use_synth :piano
+    16.times do
+      # This assumes that our chord progression is all in major mode
+      # which is a big limitation. But hey, that's just a proof of concept!
+      play chord($kbnote, :major, num_octaves: 1).choose
+      sleep 0.25
+    end
+  end
+end

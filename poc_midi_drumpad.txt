@@ -1,0 +1,26 @@
+live_loop :drumpad do
+  use_real_time
+  c, v = sync "/midi/pixel_xl_midi_1/1/1/note_on"
+  sample case c
+  when 36; :drum_heavy_kick
+  when 37; :drum_tom_mid_soft
+  when 38; :drum_tom_mid_hard
+  when 39; :drum_tom_lo_soft
+  when 40; :drum_tom_lo_hard
+  when 41; :drum_tom_hi_soft
+  when 42; :drum_tom_hi_hard
+  when 43; :drum_splash_soft
+  when 44; :drum_splash_hard
+  when 45; :drum_snare_soft
+  when 46; :drum_snare_hard
+  when 47; :drum_cymbal_soft
+  when 48; :drum_cymbal_hard
+  when 49; :drum_cymbal_open
+  when 50; :drum_cymbal_closed
+  when 51; :drum_cymbal_pedal
+  when 52; :drum_bass_soft
+  when 53; :drum_bass_hard
+  when 54; :drum_cowbell
+  when 55; :drum_roll
+  end
+end

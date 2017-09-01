@@ -1,0 +1,29 @@
+use_bpm 60
+
+live_loop :kick do
+  sample :loop_safari, amp: 0.3
+  sleep sample_duration :loop_safari
+end
+
+live_loop :midikbctrl do
+  use_real_time
+  $kbnote, $kbvelocity = sync "/midi/midi_through_port-0/0/1/note_on"
+end
+
+live_loop :midimodwhctrl do
+  use_real_time
+  chan, value = sync "/midi/midi_through_port-0/0/1/control_change"
+  if chan == 1 then
+    $modwheel = value
+  end
+end
+
+live_loop :saw do
+  sync :kick
+  note = $kbnote
+  with_fx :bitcrusher, sample_rate: 500 + ($modwheel * 200) do
+    puts (note - (midi_notes :E4)[0])
+    sample :guit_em9, pitch: (note - (midi_notes :E4)[0])
+    sleep 1
+  end
+end
