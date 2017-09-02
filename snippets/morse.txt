@@ -1,0 +1,27 @@
+use_bpm 120
+
+define :morse do |str|
+  use_bpm 480
+  with_synth_defaults attack:0, release: 0, note: :Fb4 do
+    str.each_char do |c|
+      case c
+      when '-'; synth :sine, sustain: 3; sleep 4
+      when '.'; synth :sine, sustain: 1; sleep 2
+      when ' '; sleep 3
+      end
+    end
+  end
+end
+
+with_fx :flanger do
+  morse "-.- --- .-. ..-. ..- .-. ..   "
+end
+
+live_loop :static do
+  with_fx :flanger do
+    with_fx :slicer, wave: 2, phase: rrand(0.2, 4.1) do
+      synth :noise, attack: 2, sustain: 2, release: 0
+      sleep 1
+    end
+  end
+end
