@@ -1,0 +1,40 @@
+base = 36
+beats = 4
+instr = [
+  :drum_heavy_kick,
+  :drum_tom_mid_soft,
+  :drum_tom_hi_soft,
+  :drum_snare_hard
+]
+
+puts instr.length
+
+track = [0] * beats
+
+live_loop :midipadon do
+  (0..beats - 1).each do |beat|
+    (0..(instr.length - 1)).each do |i|
+      enabled = track[beat] & (2 ** i)
+      midi_note_on base + (beat * instr.length) + i, enabled * 127
+    end
+  end
+  use_real_time
+  n, v = sync "/midi/pixel_xl_midi_1/1/1/note_on"
+  beat = (n - base) / instr.length
+  i = (n - base) % beats
+  bit = (2 ** i)
+  track[beat] = track[beat] ^ bit
+end
+
+use_bpm 120
+
+live_loop :drums do
+  thistrack = track.dup
+  beat = tick % 4
+  (0..(instr.length - 1)).each do |i|
+    if (thistrack[beat] & (2 ** i)) > 0 then
+      sample instr[i]
+    end
+  end
+  sleep 1
+end
