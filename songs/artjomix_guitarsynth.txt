@@ -1,0 +1,66 @@
+use_bpm 110
+
+artjomix_guit = "/home/korfuri/Code/tasty_pies/samples/looperman/l-1220578-0112588-artjomix-guitarsynth/"
+
+fadein = (ramp *range(0, 1, 0.1))
+
+live_loop :one do
+  sleep 1
+end
+
+live_loop :four do
+  sync :one
+  sleep 3.9
+end
+
+live_loop :ajm do
+  ##| stop
+  sync :four
+  with_fx :bitcrusher, mix: 0.4, sample_rate: 1500 do
+    sample artjomix_guit, "E", compress: 1, amp: fadein.tick
+    sleep 15.5
+  end
+end
+
+live_loop :snares do
+  ##| stop
+  with_fx :reverb, room: 0.4 do
+    sync :four
+    3.times do
+      sample :bd_haus
+      sleep 1
+    end
+    sample :bd_haus, rate: 1.7
+  end
+end
+
+live_loop :cymbals do
+  ##| stop
+  sync :four
+  vols = ring(1, 0.5, 0.5, 0.5)
+  7.times do
+    sample :drum_cymbal_soft, amp: vols.tick
+    sleep 0.5
+  end
+  sample :drum_cymbal_soft, amp: vols.tick
+end
+
+live_loop :chords do
+  ##| stop
+  sync :one
+  c = chord(:E3, :minor7, octaves: 3)
+  with_fx :distortion, distort: 0.3 do
+    synth :dsaw, note: c.tick, amp: 0.1
+  end
+end
+
+live_loop :bassline do
+  ##| stop
+  sync :four
+  use_random_seed 42
+  c = chord(:E2, :minor7)
+  7.times do
+    synth :tb303, note: c.choose, amp: 0.3
+    sleep 0.5
+  end
+end

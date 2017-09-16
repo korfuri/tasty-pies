@@ -1,0 +1,59 @@
+use_bpm 120
+use_random_seed 4242
+chords = [[:D3, :minor], [:E3, :minor], [:A3, :minor], [:D3, :minor]].ring
+
+live_loop :measure do
+  $mn = tick
+  $mchord = chord(*chords[$mn])
+  $md = chords[$mn][0]
+  sleep 4
+end
+
+define :arpeggio do |c|
+  in_thread do
+    c.each do |n|
+      play n
+      sleep 0.1
+    end
+  end
+end
+
+live_loop :bd do
+  sync :measure
+  sample :bd_haus
+  4.times do
+    sleep 0.5
+    sample :bd_ada
+  end
+  sleep 1
+  sample :bd_haus
+  sleep 0.5
+  sample :bd_zum
+end
+
+live_loop :bass do
+  sync :measure
+  with_fx :distortion, distort: 0.7 do
+    sleep 0.3
+    4.times do
+      sample :bass_hit_c, amp: 0.5, pitch: ($md - :C3)
+      sleep 0.5
+    end
+    sleep 0.5
+    sample :bass_hit_c, amp: 0.5, pitch: ($md - :C3)
+  end
+end
+
+live_loop :melody do
+  sync :measure
+  use_synth_defaults amp: 0.1, release: 0.5
+  use_synth :dsaw
+  with_fx :gverb do
+    arpeggio $mchord
+    sleep 0.5
+    6.times do
+      sleep 0.5
+      play $mchord.pick if one_in(2)
+    end
+  end
+end
