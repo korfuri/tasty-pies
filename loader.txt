@@ -1,0 +1,30 @@
+# Tasty pies. Yummy.
+$tasty_pies = "/home/korfuri/Code/tasty_pies/"
+
+# Root of all samples
+samples_dir = $tasty_pies + "samples/"
+
+# Load synths
+# Requires ticking "Enable external synths and FX" in Preferences/Audio
+load_synthdefs $tasty_pies + "synths/enkerli/"
+
+# Libraries
+## SPATS
+load_samples ($spats_clap = samples_dir + "SPATS/01 - Drums & Perc/Claps")
+load_samples ($spats_lift = samples_dir + "SPATS/04 - FX/Lifts")
+load_samples ($spats_impact = samples_dir + "SPATS/04 - FX/Impacts")
+load_samples ($spats_drop = samples_dir + "SPATS/04 - FX/Drops")
+load_samples ($spats_crash = samples_dir + "SPATS/04 - FX/Crashes")
+load_samples ($spats_pad = samples_dir + "SPATS/03 - Pads")
+load_samples ($spats_bass = samples_dir + "SPATS/02 - Bass")
+load_samples ($spats_snare = samples_dir + "SPATS/01 - Drums & Perc/Snares")
+load_samples ($spats_perc = samples_dir + "SPATS/01 - Drums & Perc/Percussion")
+load_samples ($spats_kick = samples_dir + "SPATS/01 - Drums & Perc/Kicks")
+load_samples ($spats_vocal = samples_dir + "SPATS/05 - Vocal Loops")
+
+## VSCO2
+# TODO
+
+# Individual samples under looperman
+# looperman_samples = samples_dir + "looperman/"
+
