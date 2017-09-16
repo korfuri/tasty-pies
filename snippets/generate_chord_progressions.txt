@@ -1,0 +1,31 @@
+ctypes = [0, :major, :minor, :minor, :major, :major, :minor, :dim]
+progressions = [
+  [1,2,3,4,5,6,7],
+  [1,2,3,4,5,6,7],
+  [2,4,5,7],
+  [3,2,6],
+  [4,5,7,1],
+  [5,4,6,1],
+  [6,5,2,4],
+  [7,3,1],
+]
+
+define :progression do |key|
+  step = 0
+  prog = [[key, :major]]
+  while step != 1
+    step = progressions[step].choose
+    prog.append([key + step, ctypes[step]])
+  end
+  return prog.ring
+end
+
+with_random_seed 1 do
+  prog = progression(:C)
+  puts prog
+  
+  prog.each do |c|
+    play_chord chord(*c)
+    sleep 1
+  end
+end
