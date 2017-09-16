@@ -1,0 +1,3 @@
+[submodule "samples/VSCO-2"]
+	path = samples/VSCO-2
+	url = https://github.com/sgossner/VSCO-2-CE.git
